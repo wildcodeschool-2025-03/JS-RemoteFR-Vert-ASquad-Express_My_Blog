@@ -1,6 +1,8 @@
 import client from "../client";
 import { Request, Response } from "express";
-import { readOneArticles } from "./articles.model";
+import { readOneArticles, insertArticle } from "./articles.model";
+
+import { insertCategoriesByArticle } from "../category_by_article/category_by_article.model";
 
 const getAllArticles = async (req: Request, res: Response) => {
   try {
@@ -45,4 +47,19 @@ INNER JOIN article ON article.id = category_by_article.article_id WHERE article.
   }
 };
 
-export { getAllArticles, getOneArticle, getCategoriesByArticle };
+const addArticle = async (req: Request, res: Response) => {
+  try {
+    const { categories, ...rest } = req.body;
+    const insert = await insertArticle(rest);
+    const articles = insert[0] as { insertId: number };
+
+    await insertCategoriesByArticle(categories, articles.insertId);
+
+    res.status(201).json({ id: articles.insertId });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
+export { getAllArticles, getOneArticle, getCategoriesByArticle, addArticle };
