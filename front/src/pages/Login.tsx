@@ -1,10 +1,26 @@
 import useUser from "../services/useUser";
+import { useNavigate } from "react-router";
+
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Login() {
   const { user, handleUser, login } = useUser();
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const validateLogin = async (e) => {
+    try {
+      const logged = await login(e);
+      authContext?.setAuth(logged);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <form onSubmit={login}>
+    <form onSubmit={validateLogin}>
       <label htmlFor="mail">
         Votre email
         <input
