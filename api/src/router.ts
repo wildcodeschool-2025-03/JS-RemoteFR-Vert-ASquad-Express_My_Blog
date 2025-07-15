@@ -6,6 +6,7 @@ import {
   getCategoriesByArticle,
   getOneArticle,
 } from "./articles/articles.controller";
+import { login } from "./users/user.controller";
 
 import { validateArticle } from "./articles/articles.middleware";
 
@@ -15,5 +16,7 @@ router.get("/articles", getAllArticles);
 router.get("/articles/:id", getOneArticle);
 router.get("/articles/:id/categories", getCategoriesByArticle);
 router.post("/articles", validateArticle, addArticle);
+
+router.post("/login", login);
 
 export default router;

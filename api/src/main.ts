@@ -1,4 +1,5 @@
 import express, { Response, Request } from "express";
+import cors from "cors";
 import client from "./client";
 import router from "./router";
 
@@ -20,12 +21,14 @@ client
     console.warn(error.message);
   });
 
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("Welcome Wilders");
 });
 
 app.use(express.json());
-app.use(router);
+app.use("/api", router);
 
 app.listen(5500, () => {
   console.info(`You're server is running on http://localhost:5500`);
