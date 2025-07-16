@@ -35,4 +35,8 @@ const insertArticle = async (article: any) => {
   );
 };
 
-export { readOneArticles, insertArticle };
+const deleteOneArticleById = async (id: number) => {
+  return await client.query("DELETE FROM article WHERE id = ?", [id]);
+};
+
+export { readOneArticles, insertArticle, deleteOneArticleById };

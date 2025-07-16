@@ -1,6 +1,10 @@
 import client from "../client";
 import { Request, Response } from "express";
-import { readOneArticles, insertArticle } from "./articles.model";
+import {
+  readOneArticles,
+  insertArticle,
+  deleteOneArticleById,
+} from "./articles.model";
 
 import { insertCategoriesByArticle } from "../category_by_article/category_by_article.model";
 
@@ -62,4 +66,19 @@ const addArticle = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllArticles, getOneArticle, getCategoriesByArticle, addArticle };
+const deleteOneArticle = async (req: Request, res: Response) => {
+  try {
+    const result = await deleteOneArticleById(+req.params.id);
+    res.sendStatus(204);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+};
+
+export {
+  getAllArticles,
+  getOneArticle,
+  getCategoriesByArticle,
+  addArticle,
+  deleteOneArticle,
+};
